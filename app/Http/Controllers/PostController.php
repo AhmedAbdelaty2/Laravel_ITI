@@ -28,11 +28,11 @@ class PostController extends Controller
 
     public function edit($postId)
     {
-        $posts = Post::all();
+        $post = Post::find($postId);
         $users = User::all();
         
         return view('posts.edit', [
-            'post' => $posts[$postId-1],
+            'post' => $post,
             'users' => $users,
         ]);
     }
@@ -49,18 +49,18 @@ class PostController extends Controller
 
 
         //to_route() didn't work
-        $posts = Post::all();
-
-        return view('posts.index',[
-            'posts' => $posts,
-        ]);
+        return redirect('posts');
     }
 
     public function show($postId)
     {
         $post = Post::find($postId);
-        dd($post);
-        return $postId;
+        $user = User::find($post->user_id);
+
+        return view('posts.show',[
+            'post'=>$post,
+            'user'=>$user,
+        ]);
     }       
 
     public function update($postId)
@@ -73,23 +73,14 @@ class PostController extends Controller
             'user_id'=>$data['post_creator']
         ]);
 
-        $posts = Post::all();
-
-        return view('posts.index',[
-            'posts' => $posts,
-        ]);
+        return redirect('posts');
     }
 
     public function destroy($postId)
     {
         
         post::where('id',$postId)->delete();
-        //return to_route('posts.index');
 
-        $posts = Post::all();
-
-        return view('posts.index',[
-            'posts' => $posts,
-        ]);
+        return redirect('posts');
     }  
 }

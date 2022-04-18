@@ -17,19 +17,29 @@
               </tr>
             </thead>
             <tbody>
+              @php
+                  use Carbon\Carbon;
+              @endphp
             @foreach ( $posts as $post)        
               <tr>
                 <td>{{ $post->id }}</th>
                 <td>{{ $post->title }}</td>
                 <td>{{ $post->user ? $post->user->name : 'Not Found' }}</td>
-                <td>{{ $post['created_at'] }}</td>
+                @php
+                  $createdAt = Carbon::parse($post->created_at);
+                  $createdAt= $createdAt->format('l jS \of F Y h:i:s A');
+                @endphp
+                <td>{{ $createdAt }}</td>
                 <td>
                     <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn btn-info">View</a>
                     <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-primary">Edit</a>
-                    <a href="{{ route('posts.destroy', ['post' => $post->id]) }}" onclick="del(event)" class="btn btn-danger" data-method="delete">Delete</a>
-                    @method('DELETE')
-                </td>
-              </tr>
+                    <form method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}" accept-charset="UTF-8" style="display:inline">
+                      {{ method_field('DELETE') }}
+                      {{ csrf_field() }}
+                      <button type="submit" class="btn btn-danger btn-sm" title="Delete Student" onclick="del(event)" class="btn btn-danger"> Delete</button>
+                    </form>
+                  </td>
+               </tr>
             @endforeach
 
             </tbody>
