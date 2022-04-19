@@ -14,6 +14,6 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        //  Post::factory()->count(2)->create(); didn't work here but worked in DatabaseSeeder.php
+        //  Post::factory(500)->create(); didn't work here but worked in DatabaseSeeder.php
     }
 }

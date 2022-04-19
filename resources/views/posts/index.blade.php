@@ -44,6 +44,7 @@
 
             </tbody>
           </table>
+          {{ $posts->render() }}
           <script>
             function del(event){
               if(!confirm("are you sure?")){
