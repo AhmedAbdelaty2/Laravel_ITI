@@ -47,7 +47,6 @@ class PostController extends Controller
             'user_id' => $data['post_creator'],
         ]);
 
-
         //to_route() didn't work
         return redirect('posts');
     }
@@ -56,10 +55,14 @@ class PostController extends Controller
     {
         $post = Post::find($postId);
         $user = User::find($post->user_id);
+        $allUsers = User::all();
+        $comments= $post->comments;
 
         return view('posts.show',[
             'post'=>$post,
             'user'=>$user,
+            'comments'=>$comments,
+            'allUsers'=>$allUsers,
         ]);
     }       
 
@@ -78,7 +81,6 @@ class PostController extends Controller
 
     public function destroy($postId)
     {
-        
         post::where('id',$postId)->delete();
 
         return redirect('posts');

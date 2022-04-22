@@ -19,7 +19,7 @@ class PostFactory extends Factory
     {
         return [
             "title" => $this->faker->sentence($maxNbChars = 1),
-            "description" => $this->faker->realText($maxNbChars = 50),
+            "description" => $this->faker->realText($maxNbChars = 200),
             "user_id" => $this->faker->numberBetween(1,2)
         ];
     }

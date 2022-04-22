@@ -26,4 +26,27 @@
     </div>
 </div>
 
+<form action="{{route('comments.store', ['commentable_id' => $post['id'], 'commentable_type' => get_class($post)])}}" method="POST">
+@csrf
+<div class="form-group">
+    <textarea name="body" id="body" cols="15" rows="4" class="form-control"
+        placeholder="Your comment here"></textarea>
+</div>
+<select name="comment_creator" class="form-control">
+    @foreach ($allUsers as $singleUser)
+        <option value="{{$singleUser->id}}">{{$singleUser->name}}</option>
+    @endforeach
+</select>
+<div class="form-group">
+    <button type="submit" class="btn btn-primary my-4">Add Comment</button>
+</div>
+</form>
+
+<h4 for="exampleFormControlTextarea1" class="form-label">comments</h4>
+<div id="comments_section">
+    @foreach ( $comments as $comment)
+        <label for="exampleFormControlTextarea1" class="form-control" id="exampleFormControlInput1" class="form-label"> {{$comment->comment}}</label>
+    @endforeach
+</div>
+
 @endsection

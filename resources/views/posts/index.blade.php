@@ -36,7 +36,7 @@
                     <form method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}" accept-charset="UTF-8" style="display:inline">
                       {{ method_field('DELETE') }}
                       {{ csrf_field() }}
-                      <button type="submit" class="btn btn-danger btn-sm" title="Delete Student" onclick="del(event)" class="btn btn-danger"> Delete</button>
+                      <button type="submit" class="btn btn-danger" title="Delete Student" onclick="del(event)" class="btn btn-danger"> Delete</button>
                     </form>
                   </td>
                </tr>
