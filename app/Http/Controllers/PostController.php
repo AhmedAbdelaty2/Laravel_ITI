@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
 use App\Http\Requests\StorePostRequest;
+use App\Jobs\PruneOldPostsJob;
 
 class PostController extends Controller
 {
     public function index()
     {
+        dispatch(new PruneOldPostsJob());
         $posts = Post::paginate(10);
 
         return view('posts.index',[
@@ -40,12 +42,12 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        $data = request()->all();
+        $validated= $request->validated();
 
         Post::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'user_id' => $data['post_creator'],
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'user_id' => $validated['post_creator'],
         ]);
 
         //to_route() didn't work
@@ -70,12 +72,11 @@ class PostController extends Controller
     public function update($postId, StorePostRequest $request)
     {
         $validated= $request->validated();   
-        $data = request()->all();
 
         post::where('id',$postId)->update([
-            'title'=>$data['title'],
-            'description'=>$data['description'],
-            'user_id'=>$data['post_creator']
+            'title'=>$validated['title'],
+            'description'=>$validated['description'],
+            'user_id'=>$validated['post_creator']
         ]);
 
         return redirect('posts');
