@@ -69,6 +69,7 @@ class PostController extends Controller
 
     public function update($postId, StorePostRequest $request)
     {
+        $validated= $request->validated();   
         $data = request()->all();
 
         post::where('id',$postId)->update([

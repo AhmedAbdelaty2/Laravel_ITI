@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePostRequest extends FormRequest
 {
@@ -23,9 +24,15 @@ class StorePostRequest extends FormRequest
      */
     public function rules()
     {
+        $id = null;
+        if(isset(explode('/',$this->getPathInfo())[2])){
+            $id = explode('/',$this->getPathInfo())[2];
+        }
+
         return [
-            'title' => ['required', 'unique:App\Models\Post' ,'min:3'],
+            'title' => ['required','min:3', Rule::unique('App\Models\Post')->ignore($id)],
             'description' => ['required', 'min:5'],
+            'post_creator' => ['exists:App\Models\User,id'],
         ];
     }
 }
