@@ -65,7 +65,6 @@ Route::get('login/google',function(){
 
 Route::get('/google/callback',function(){
     $googleuser = Socialite::driver('google')->user();
-   
     $user = User::where('email', $googleuser->email)->first();
  
     if ($user) {
