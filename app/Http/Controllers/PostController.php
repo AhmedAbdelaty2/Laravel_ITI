@@ -12,7 +12,6 @@ class PostController extends Controller
 {
     public function index()
     {
-        dispatch(new PruneOldPostsJob());
         $posts = Post::paginate(10);
 
         return view('posts.index',[
