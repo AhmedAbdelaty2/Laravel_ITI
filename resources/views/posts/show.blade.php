@@ -3,6 +3,9 @@
 @section('title')Post @endsection
 
 @section('content')
+@if($post->img_path)
+    <img src='/images/{{ $post->img_path }}' width="400"/>
+@endif
 <div class="card my-5">
     <div class="card-header">Post info</div>
     <div class="card-body">

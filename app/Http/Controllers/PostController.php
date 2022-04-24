@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Http\Requests\StorePostRequest;
 use App\Jobs\PruneOldPostsJob;
+use Illuminate\Support\Facades\File; 
 
 class PostController extends Controller
 {
@@ -42,12 +43,19 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $validated= $request->validated();
+        $new_name = null;
 
+        if($request['select_image']){
+            $image = $request->file('select_image');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $new_name); 
+        } 
         Post::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
+            'title' =>  $validated['title'],
+            'description' =>  $validated['description'],
             'user_id' => $validated['post_creator'],
-        ]);
+            'img_path'=>$new_name
+         ]);  
 
         //to_route() didn't work
         return redirect('posts');
@@ -70,13 +78,29 @@ class PostController extends Controller
 
     public function update($postId, StorePostRequest $request)
     {
-        $validated= $request->validated();   
+        $validated= $request->validated();    
 
-        post::where('id',$postId)->update([
-            'title'=>$validated['title'],
-            'description'=>$validated['description'],
-            'user_id'=>$validated['post_creator']
+        if($request['select_image']){
+            $post= post::find($postId);
+            File::delete(public_path('images/'.$post['img_path'])); 
+            $image = $request->file('select_image');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $new_name);
+            Post::where('id',$postId)->update([
+                'title'=>$validated['title'],
+                'description'=>$validated['description'],
+                'user_id'=>$validated['post_creator'],
+                'img_path'=>$new_name,
         ]);
+        }else{
+            Post::where('id',$postId)->update([
+                'title'=>$validated['title'],
+                'description'=>$validated['description'],
+                'user_id'=>$validated['post_creator']
+                
+            ]);
+
+        }
 
         return redirect('posts');
     }

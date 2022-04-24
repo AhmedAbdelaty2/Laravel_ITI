@@ -33,6 +33,7 @@ class StorePostRequest extends FormRequest
             'title' => ['required','min:3', Rule::unique('App\Models\Post')->ignore($id)],
             'description' => ['required', 'min:5'],
             'post_creator' => ['exists:App\Models\User,id'],
+            'select_image'=>['image','mimes:jpg,png','max:2048'],
         ];
     }
 }
