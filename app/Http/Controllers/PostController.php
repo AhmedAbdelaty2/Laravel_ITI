@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
 use App\Http\Requests\StorePostRequest;
-use App\Jobs\PruneOldPostsJob;
 use Illuminate\Support\Facades\File; 
 
 class PostController extends Controller
